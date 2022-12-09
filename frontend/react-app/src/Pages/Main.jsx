@@ -8,14 +8,14 @@ function Main() {
     return (
         <div className='mt-5'>
             <Container>
-            <Row>
-                <Col>
-                    <Controller/>
-                </Col>
-                <Col>
-                    <LogPanel/>
-                </Col>
-            </Row>
+                <Row>
+                    <Col>
+                        <Controller />
+                    </Col>
+                    <Col>
+                        <LogPanel />
+                    </Col>
+                </Row>
             </Container>
         </div>
     );
