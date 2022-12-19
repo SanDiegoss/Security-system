@@ -22,7 +22,7 @@ class Log(db.Model):
 	message : str
 
 	id = Column(sqlalchemy.Integer, primary_key=True)
-	date = Column(sqlalchemy.Integer)
+	date = Column(sqlalchemy.String(256))
 	message = Column(sqlalchemy.String(256))
 
 @dataclass
