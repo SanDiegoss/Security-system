@@ -18,7 +18,7 @@ db = SQLAlchemy()
 @dataclass
 class Log(db.Model):
 	id : int
-	date : int
+	date : str
 	message : str
 
 	id = Column(sqlalchemy.Integer, primary_key=True)
