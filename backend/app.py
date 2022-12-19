@@ -57,19 +57,11 @@ with app.app_context():
 # api
 @app.route("/api/GetRooms", methods = {"GET"})
 def GetRoooms():
-	count = db.session.query(Room).count()
-	if count == 0:
-		return '[]', 200
-
 	rooms = db.session.query(Room).all()
 	return flask.jsonify(rooms), 200
 
 @app.route("/api/GetLogs", methods = {"GET"})
 def GetLogs():
-	count = db.session.query(Log).count()
-	if count == 0:
-		return '[]', 200
-
 	logs = db.session.query(Log).all()
 	return flask.jsonify(logs), 200
 
@@ -116,9 +108,6 @@ def SetStatus():
 		return 'BAD REQUEST', 400
 
 	room = db.session.query(Room).filter(Room.id == id).one()
-
-	if room is None:
-		return 'BAD REQUEST', 400
 
 	room.status = status
 	db.session.commit()
