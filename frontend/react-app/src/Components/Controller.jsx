@@ -12,7 +12,7 @@ function Controller(props) {
     const rooms = props.rooms;
     const setRooms = props.setRooms;
     const addLog = props.addLog;
-    const setStatus = props.setStatus;
+    const changeStatus = props.changeStatus;
     const colCount = 3;
     const rowCount = Math.ceil(rooms.length / colCount);
     const changeRoom = (id, status) => {
@@ -23,7 +23,7 @@ function Controller(props) {
                     date: Date.now(),
                     message: `В секторе <${item.getName()}> был установлен статус: <${item.getStatusName()}>`,
                 });
-                setStatus({
+                changeStatus({
                     id: id,
                     status: status
                 });

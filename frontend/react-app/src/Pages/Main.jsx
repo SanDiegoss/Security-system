@@ -68,35 +68,23 @@ class Room {
     }
 }
 
-const test = [
-    new Room({id: 0, name: 'Комната 1', status: Status.ok}),
-    new Room({id: 1, name: 'Комната 2', status: Status.ok}),
-    new Room({id: 2, name: 'Комната 3', status: Status.ok}),
-    new Room({id: 3, name: 'Комната 4', status: Status.ok}),
-    new Room({id: 4, name: 'Комната 5', status: Status.ok}),
-    new Room({id: 5, name: 'Комната 6', status: Status.ok}),
-    new Room({id: 6, name: 'Комната 7', status: Status.ok}),
-    new Room({id: 7, name: 'Комната 8', status: Status.ok}),
-    new Room({id: 8, name: 'Комната 9', status: Status.ok}),
-    new Room({id: 9, name: 'Комната 10', status: Status.ok}),
-    new Room({id: 10, name: 'Комната 11', status: Status.ok}),
-    new Room({id: 11, name: 'Комната 12', status: Status.ok}),
-];
-
 function Main() {
     const [logs, setLogs] = useState([]);
     const [rooms, setRooms] = useState([]);
     const addLog = async (log) => {
         const request = new Request('/api/AddLog', {
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
             method: 'POST',
-            body: log,
+            body: JSON.stringify(log),
         });
         try {
             let res = await fetch(request);
             res = await res.json();
             setLogs([
                 ...logs,
-                new Log ({date: log.date, message: log.message, id: res}),
+                new Log ({date: +log.date, message: log.message, id: res}),
             ]);
         } catch (error) {
             console.log(error.message);
@@ -104,9 +92,13 @@ function Main() {
     };
     const changeStatus = async ({id, status}) => {
         const request = new Request('/api/SetStatus', {
+            headers: new Headers({
+                'Content-Type': 'application/json',
+            }),
             method: 'POST',
-            body: {id: id, status: status},
+            body: JSON.stringify({id: id, status: status}),
         });
+        console.log({id: id, status: status});
         try {
             let res = await fetch(request);
             if (res.status === 400) {
@@ -123,7 +115,7 @@ function Main() {
         try {
             let res = await fetch(request);
             res = await res.json();
-            setLogs(res.map((item) => (new Log({date: item.date, message: item.message, id: item.id}))));
+            setLogs(res.map((item) => (new Log({date: +item.date, message: item.message, id: item.id}))));
         } catch (error) {
             console.log(error.message);
         }
