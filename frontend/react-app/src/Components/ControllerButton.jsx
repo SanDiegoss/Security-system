@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import { Status } from './Controller';
 
@@ -7,9 +6,9 @@ function ControllerButton(props) {
     /**
      * @type {Status}
      */
-    const [status, setStatus] = useState(props.status);
+    const status = props.status;
     const name = props.name;
-    const changeItem = props.changeItem;
+    const changeRoom = props.changeRoom;
     const id = props.id;
     const getButtonColor = (status) => {
         switch(status) {
@@ -24,11 +23,7 @@ function ControllerButton(props) {
         }
     }
     const change = (_status) => {
-        if (_status !== status) {
-            // fetch
-            setStatus(_status);
-            changeItem(id, _status);
-        }
+        changeRoom(id, _status);
     }
     const buttonColor = getButtonColor(status);
     return (

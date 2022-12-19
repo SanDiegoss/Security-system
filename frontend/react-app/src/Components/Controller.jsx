@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 
 import ControllerButton from './ControllerButton';
@@ -79,7 +79,7 @@ function Controller(props) {
     const addLog = props.addLog;
     const changeRoom = (id, status) => {
         const _rooms = roomButtons.map((item) => {
-            if(item.getId() === id) {
+            if(item.getId() === id && item.getStatus() !== status) {
                 item.setStatus(status);
                 addLog({
                     date: Date.now(),
@@ -106,11 +106,11 @@ function Controller(props) {
                 <Card.Body>
                     <div style={style}>
                     <Container>
-                    {table.map((row) => (
-                        <Row key={row[0].id} className="mt-2">
+                    {table.map((row, i) => (
+                        <Row key={i} className="mt-2">
                             {row.map((item) => (
                                 <Col key={item.id}>
-                                    <ControllerButton id={item.id} status={item.status} name={item.name} changeItem={changeRoom}/>
+                                    <ControllerButton id={item.id} status={item.status} name={item.name} changeRoom={changeRoom}/>
                                 </Col>
                             ))}
                         </Row>

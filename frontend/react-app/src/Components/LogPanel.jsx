@@ -43,7 +43,7 @@ function LogPanel(props) {
                     <div style={style}>
                         <ListGroup>
                             {logs.map((item) => (
-                                <ListGroupItem key={item.id}>{getDate(item.date)}: {item.getMessage()}</ListGroupItem>
+                                <ListGroupItem key={item.id}>{getDate(item.date)}: {item.getMessage()}, {item.id}</ListGroupItem>
                             ))}
                         </ListGroup>
                     </div>

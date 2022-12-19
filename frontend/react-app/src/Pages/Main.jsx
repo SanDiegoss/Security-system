@@ -24,7 +24,12 @@ export class Log {
 function Main() {
     const [logs, setLogs] = useState([]);
     const addLog = ({message, date}) => {
-        const _log = new Log({date: date, message: message, id: logs.slice(-1).id + 1})
+        let _log;
+        if (logs.length === 0) {
+            _log = new Log({date: date, message: message, id: 0});
+        } else {
+            _log = new Log({date: date, message: message, id: logs.slice(-1)[0].id + 1});
+        }
         setLogs([
             ...logs,
             _log
