@@ -1,54 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-
-class Log {
-    constructor(date, message, id) {
-        this.date = date;
-        this.message = message;
-        this.id = id;
-    }
-    getDate() {
-        return this.date;
-    }
-    getMessage() {
-        return this.message;
-    }
-}
-
-const test = [
-    new Log('20.20.20', 'Была начата тревога!', 1),
-    new Log('20.20.21', 'Была начата тревога!!', 2),
-    new Log('20.20.22', 'Была начата тревога!!!', 3),
-    new Log('20.20.22', 'Была начата тревога!!!', 4),
-    new Log('20.20.22', 'Была начата тревога!!!', 5),
-    new Log('20.20.22', 'Была начата тревога!!!', 6),
-    new Log('20.20.22', 'Была начата тревога!!!', 7),
-    new Log('20.20.22', 'Была начата тревога!!!', 8),
-    new Log('20.20.22', 'Была начата тревога!!!', 9),
-    new Log('20.20.22', 'Была начата тревога!!!', 10),
-    new Log('20.20.22', 'Была начата тревога!!!', 11),
-    new Log('20.20.22', 'Была начата тревога!!!', 12),
-    new Log('20.20.22', 'Была начата тревога!!!', 13),
-    new Log('20.20.22', 'Была начата тревога!!!', 14),
-    new Log('20.20.22', 'Была начата тревога!!!', 15),
-    new Log('20.20.22', 'Была начата тревога!!!', 16),
-    new Log('20.20.22', 'Была начата тревога!!!', 17),
-    new Log('20.20.22', 'Была начата тревога!!!', 18),
-    new Log('20.20.22', 'Была начата тревога!!!', 19),
-    new Log('20.20.22', 'Была начата тревога!!!', 20),
-    new Log('20.20.22', 'Была начата тревога!!!', 21),
-    new Log('20.20.22', 'Была начата тревога!!!', 22),
-    new Log('20.20.22', 'Была начата тревога!!!', 23),
-    new Log('20.20.22', 'Была начата тревога!!!', 24),
-    new Log('20.20.22', 'Была начата тревога!!!', 25),
-    new Log('20.20.22', 'Была начата тревога!!!', 26),
-    new Log('20.20.22', 'Была начата тревога!!!', 27),
-    new Log('20.20.22', 'Была начата тревога!!!', 28),
-    new Log('20.20.22', 'Была начата тревога!!!', 29),
-    new Log('20.20.22', 'Была начата тревога!!!', 30),
-];
 
 const style = {
     overflowY: 'scroll',
@@ -56,11 +8,31 @@ const style = {
     height: '660px'
 };
 
-function LogPanel() {
+function LogPanel(props) {
+    const logs = props.logs;
     /**
-     * @type {[Array.<Log>, Function]}
+     * @param {Number} date 
+     * @return {String}
      */
-    const [logs, setLogs] = useState(test);
+    const getDate = (date) => {
+        const _date = new Date(date);
+
+        let nums = _date.getDate();
+        let month = _date.getMonth();
+        let year = _date.getFullYear();
+        let hours = _date.getHours();
+        let minutes = _date.getMinutes();
+        let seconds = _date.getSeconds();
+
+        nums = +nums < 10 ? '0'+nums : nums;
+        month = +month < 10 ? '0'+month : month;
+        year = +year < 10 ? '0'+year : year;
+        hours = +hours < 10 ? '0'+hours : hours;
+        minutes = +minutes < 10 ? '0'+minutes : minutes;
+        seconds = +seconds < 10 ? '0'+seconds : seconds;
+
+        return `${nums}.${month}.${year}, ${hours}:${minutes}:${seconds}`;
+    };
     return (
         <div>
             <Card>
@@ -71,13 +43,12 @@ function LogPanel() {
                     <div style={style}>
                         <ListGroup>
                             {logs.map((item) => (
-                                <ListGroupItem key={item.id}>{item.getDate()}: {item.getMessage()}</ListGroupItem>
+                                <ListGroupItem key={item.id}>{getDate(item.date)}: {item.getMessage()}</ListGroupItem>
                             ))}
                         </ListGroup>
                     </div>
                 </Card.Body>
                 <Card.Footer>
-                    keka
                 </Card.Footer>
             </Card>
         </div>

@@ -5,18 +5,18 @@ import Card from 'react-bootstrap/Card';
 
 import ControllerButton from './ControllerButton';
 
-class Status {
-    constructor({isFire, isMovement}) {
-        this.isFire = isFire;
-        this.isMovement = isMovement;
-    }
-    getIsFire() {
-        return this.isFire;
-    }
-    getIsMovement() {
-        return this.isMovement;
-    }
-}
+/**
+ * @typedef {Object} Status
+ * @property {Number} fire
+ * @property {Number} movement
+ * @property {Number} ok
+ */
+
+export const Status = {
+    ok: 0,
+    movement: 1,
+    fire: 2,
+};
 
 class Room {
     constructor({id, name, status}) {
@@ -25,7 +25,7 @@ class Room {
         /**
          * @type {Status}
          */
-        this.status =  status;
+        this.status = status;
     };
     getId() {
         return this.id;
@@ -39,31 +39,57 @@ class Room {
     setStatus(status) {
         this.status = status;
     }
+    getStatusName() {
+        switch(this.status) {
+            case Status.ok:
+                return 'OK';
+            case Status.movement:
+                return 'движение';
+            case Status.fire:
+                return 'пожар';
+            default:
+            break;
+        }
+    }
 }
 
 const test = [
-    new Room({id: 1, name: 'Комната 1', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 2, name: 'Комната 2', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 3, name: 'Комната 3', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 4, name: 'Комната 4', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 5, name: 'Комната 5', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 6, name: 'Комната 6', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 7, name: 'Комната 7', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 8, name: 'Комната 8', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 9, name: 'Комната 9', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 10, name: 'Комната 10', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 11, name: 'Комната 11', status: new Status({isFire: false, isMovement: false})}),
-    new Room({id: 12, name: 'Комната 12', status: new Status({isFire: false, isMovement: false})}),
+    new Room({id: 0, name: 'Комната 1', status: Status.ok}),
+    new Room({id: 1, name: 'Комната 2', status: Status.ok}),
+    new Room({id: 2, name: 'Комната 3', status: Status.ok}),
+    new Room({id: 3, name: 'Комната 4', status: Status.ok}),
+    new Room({id: 4, name: 'Комната 5', status: Status.ok}),
+    new Room({id: 5, name: 'Комната 6', status: Status.ok}),
+    new Room({id: 6, name: 'Комната 7', status: Status.ok}),
+    new Room({id: 7, name: 'Комната 8', status: Status.ok}),
+    new Room({id: 8, name: 'Комната 9', status: Status.ok}),
+    new Room({id: 9, name: 'Комната 10', status: Status.ok}),
+    new Room({id: 10, name: 'Комната 11', status: Status.ok}),
+    new Room({id: 11, name: 'Комната 12', status: Status.ok}),
 ];
 
 const style = {
     height: '652px'
 };
 
-function Controller() {
+function Controller(props) {
     const [roomButtons, setRoomButtons] = useState(test);
     const colCount = 3;
     const rowCount = Math.ceil(roomButtons.length / colCount);
+    const addLog = props.addLog;
+    const changeRoom = (id, status) => {
+        const _rooms = roomButtons.map((item) => {
+            if(item.getId() === id) {
+                item.setStatus(status);
+                addLog({
+                    date: Date.now(),
+                    message: `В секторе <${item.getName()}> был установлен статус: <${item.getStatusName()}>`,
+                });
+            }
+            return item;
+        });
+        setRoomButtons(_rooms);
+    };
     let table = [[], []];
     for (let i = 0; i < rowCount; i += 1) {
         table[i] = [];
@@ -71,7 +97,6 @@ function Controller() {
             table[i][j] = roomButtons[i * colCount + j];
         }
     }
-    console.log(table);
     return (
         <div>
             <Card>
@@ -85,7 +110,7 @@ function Controller() {
                         <Row key={row[0].id} className="mt-2">
                             {row.map((item) => (
                                 <Col key={item.id}>
-                                    <ControllerButton id={item.id} status={item.status} name={item.name}/>
+                                    <ControllerButton id={item.id} status={item.status} name={item.name} changeItem={changeRoom}/>
                                 </Col>
                             ))}
                         </Row>
@@ -94,7 +119,6 @@ function Controller() {
                     </div>
                 </Card.Body>
                 <Card.Footer>
-                    keka
                 </Card.Footer>
             </Card>
         </div>
