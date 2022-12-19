@@ -1,6 +1,6 @@
 import React from 'react';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
-import { Status } from './Controller';
+import { Status } from '../Pages/Main';
 
 function ControllerButton(props) {
     /**
