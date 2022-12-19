@@ -91,6 +91,32 @@ def AddLog():
 
 	return flask.jsonify(log.id), 200
 
+@app.route("/api/SetStatus", methods = {"POST"})
+def SetStatus():
+	if not request.is_json:
+		return 'BAD REQUEST', 400
+
+	if "id" not in request.json or "status" not in request.json:
+		return 'BAD REQUEST', 400
+
+	id = request.json["id"]
+	status = request.json["status"]
+
+	is_exists = db.session.query(db.exists().where(Room.id == id)).scalar()
+	
+	if not is_exists:
+		return 'BAD REQUEST', 400
+
+	room = db.session.query(Room).filter(Room.id == id).one()
+
+	if room is None:
+		return 'BAD REQUEST', 400
+
+	room.status = status
+	db.session.commit()
+
+	return flask.jsonify(id), 200
+
 
 # react-app (SPA) default routing
 @app.route("/")
@@ -100,11 +126,3 @@ def default():
 #  starting...
 if __name__ == '__main__':
 	app.run(threading=True)
-
-
-
-	
-
-
-	
-
